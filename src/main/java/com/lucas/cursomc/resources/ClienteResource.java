@@ -1,16 +1,19 @@
 package com.lucas.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.lucas.cursomc.domain.Cliente;
 import com.lucas.cursomc.dto.ClienteDTO;
+import com.lucas.cursomc.dto.ClienteNewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.lucas.cursomc.services.ClienteService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -27,14 +30,14 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
-//		Cliente obj = service.fromDTO(objDto);
-//		obj = service.insert(obj);
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//				.path("/{id}").buildAndExpand(obj.getId()).toUri();
-//		return ResponseEntity.created(uri).build();
-//	}
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteNewDTO objDto) {
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
