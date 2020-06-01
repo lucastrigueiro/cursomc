@@ -86,7 +86,7 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`, `cpf_ou_cnpj`, `email`, `nome`, `tipo`) VALUES
-(1, '36378912377', 'maria@gmail.com', 'Maria Silva', 1);
+(1, '36378912377', 'lucas_trigueiro10@hotmail.com', 'Maria Silva', 1);
 
 -- --------------------------------------------------------
 
