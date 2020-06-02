@@ -6,10 +6,13 @@ import java.util.Optional;
 import com.lucas.cursomc.domain.Cidade;
 import com.lucas.cursomc.domain.Cliente;
 import com.lucas.cursomc.domain.Endereco;
+import com.lucas.cursomc.domain.enums.Perfil;
 import com.lucas.cursomc.domain.enums.TipoCliente;
 import com.lucas.cursomc.dto.ClienteDTO;
 import com.lucas.cursomc.dto.ClienteNewDTO;
 import com.lucas.cursomc.repositories.EnderecoRepository;
+import com.lucas.cursomc.security.UserSS;
+import com.lucas.cursomc.services.exceptions.AuthorizationException;
 import com.lucas.cursomc.services.exceptions.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,6 +40,12 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
+
+		UserSS user = UserService.authenticated();
+		if (user==null || (!user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
